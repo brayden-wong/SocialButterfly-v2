@@ -17,6 +17,8 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { RtStrategy } from './strategies/rt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { EventsController } from './controllers/events.controller';
+import { EventsService } from './services/events.service';
 
 @Module({
   imports: [
@@ -58,12 +60,12 @@ import { PassportModule } from '@nestjs/passport';
   controllers: [
     AuthController,
     UsersController,
-
+    EventsController,
   ],
   providers: [
     AuthService,
     UsersService,
-
+    EventsService,
     LocalStrategy,
     LocalAuthGuard,
     AtStrategy,

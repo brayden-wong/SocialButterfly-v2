@@ -24,6 +24,7 @@ export class AuthController {
     return this.authService.updateToken(user['sub'], user['token']);
   }
 
+  
   @Post('logout')
   async logout(@GetUserId() id: string) {
     return await this.authService.logout(id);

@@ -1,5 +1,7 @@
 import { CreateUserDto, UpdateUserDto } from '@app/common';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Public } from '../decorators/public.decorator';
+import { GetUserId } from '../decorators/user-id.decorator';
 import { UsersService } from '../services/users.service';
 
 @Controller('users')
@@ -8,6 +10,7 @@ export class UsersController {
     private readonly usersSerivce: UsersService
   ) { }
 
+  @Public()
   @Post('register')
   async registerUser(
     @Body('user')
@@ -16,22 +19,23 @@ export class UsersController {
     return await this.usersSerivce.registerUser(user);
   }
 
+  @Public()
   @Get()
   async findAllUsers() {
     return await this.usersSerivce.findAllUsers();
   }
   
-  @Get(':id')
+  @Get('')
   async findUserById(
-    @Param('id')
+    @GetUserId()
     id: string
   ) {
     return await this.usersSerivce.findUserById(id);
   }
 
-  @Patch(':id')
+  @Patch()
   async updateUser(
-    @Param('id')
+    @GetUserId()
     id: string,
     @Body('user')
     user: UpdateUserDto
@@ -39,9 +43,9 @@ export class UsersController {
     return await this.usersSerivce.updateUser(id, user);
   }
 
-  @Delete(':id')
+  @Delete()
   async removeUser(
-    @Param('id')
+    @GetUserId()
     id: string
   ) {
     return await this.usersSerivce.removeUser(id);
