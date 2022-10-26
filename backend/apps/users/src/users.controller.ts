@@ -15,6 +15,8 @@ export class UsersController {
     return await this.usersService.registerUser(user);
   }
 
+  
+
   @MessagePattern('refresh token')
   async refreshToken(
     @Payload('id')

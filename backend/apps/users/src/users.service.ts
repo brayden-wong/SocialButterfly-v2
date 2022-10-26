@@ -1,4 +1,4 @@
-import { CreateUserDto, HelperService, UsersDatabaseService } from '@app/common';
+import { CreateUserDto, HelperService, UpdateUserDto, UsersDatabaseService } from '@app/common';
 import { ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
@@ -19,6 +19,25 @@ export class UsersService {
     });
 
     return newUser;
+  }
+
+  async findAllUsers() {
+    return await this.prisma.user.findMany();
+  }
+
+  async findUserById(id: string) {
+    return await this.prisma.user.findUnique({ where: { id: id }});
+  }
+
+  async updateUser(id: string, user: UpdateUserDto) {
+    return await this.prisma.user.update({ 
+      where: { id: id },
+      data: user
+    });
+  }
+
+  async removeUser(id: string) {
+    return await this.prisma.user.delete({ where: { id: id }});
   }
 
   async refreshToken(id: string, rt: string) {
@@ -56,12 +75,12 @@ export class UsersService {
           {
             email: {
               mode: 'insensitive',
-              equals: username
+              contains: username
             }
           }, {
             secondary_email: {
               mode: 'insensitive',
-              equals: username
+              contains: username
             }
           }
         ]
