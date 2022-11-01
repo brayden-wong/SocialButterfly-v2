@@ -1,14 +1,15 @@
 import { useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import { UserIcon, KeyIcon } from '@heroicons/react/24/solid';
 import { LoginProps } from "./credentials.interface";
 import axios from "axios";
 import { User } from "../../interfaces/user";
-import { UserContext } from "../../App";
+import { UserContext } from '../../context/user.context';
 
 export const Login = (props: LoginProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
 
   const setBlank = () => {
     setEmail('');
@@ -21,15 +22,19 @@ export const Login = (props: LoginProps) => {
       return;
     }
 
-    const response = await axios.post('http://localhost:8080/auth/login', {
-      username: email,
-      password: password,
-    });
+    try {
+      const response = await axios.post('http://localhost:8080/auth/login', {
+        username: email,
+        password: password,
+      });
+      const user = response.data as User;
+      localStorage.setItem('access_token', user.access_token);
+      localStorage.setItem('refresh_token', user.refresh_token);
+      navigate('/dashboard');
+    } catch (error: any) {
+      setBlank();
+    }
 
-    const user = response.data as User;
-    console.log(user);
-    userContext?.setUser(user);
-    console.log('user:', userContext?.user);
   }
 
   return (

@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Authentication } from "./pages/Authentication";
 import { User } from './interfaces/user';
-
-export const UserContext = React.createContext<{user: User | null, setUser: CallableFunction} | null>(null);
+import { UserContext } from './context/user.context';
+import { Dashboard } from './pages/Dashboard';
 
 const App = () => {
-  const [user, setUser] = useState<User | null>(null);
-
+  const userContext = UserContext;
+  console.log(userContext.Consumer);
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ user: user, setUser: (e:any) => {
-        setUser(e.value);
-      }}} >
+      <UserContext.Provider value={{ access_token: '', refresh_token: '' }} >
         <Routes>
           <Route path='/' element={<Authentication />} />
+          <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>

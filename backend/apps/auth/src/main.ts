@@ -4,6 +4,7 @@ import { AuthModule } from './auth.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
+  app.enableCors();
   const config = app.get<ConfigService>(ConfigService);
   const port = config.get<number>('port');
   await app.listen(port);

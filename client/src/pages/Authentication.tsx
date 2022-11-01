@@ -14,7 +14,11 @@ export const Authentication = () => {
       </div>
       <div className='w-[100%] h-[90vh]'>
         <div className="w-[50%] h-[100%] float-left bg-[#F7FBFC]">
-          <GiButterfly className='butterfly_animation' />
+          <div className='spinfucker'>
+            <div className='butterfly_animation'>
+              <GiButterfly className='relative butterfly_size ' />
+            </div>
+          </div>
         </div>
         <div className="w-[50%] h-[100%] float-left bg-[#F7FBFC]">
           <Signup signup={signup} setSignup={() => setSignup(!signup)} />
