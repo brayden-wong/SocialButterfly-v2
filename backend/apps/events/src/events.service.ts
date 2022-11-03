@@ -10,15 +10,6 @@ export class EventsService {
 
   async createEvent(event: CreateEventDto) {
     const { address, ...currentEvent } = event;
-    // if(!address) {
-    //   const newEvent = await this.prisma.event.create({
-    //     data: {
-    //       ...currentEvent
-    //     }
-    //   });
-
-    //   return newEvent;
-    // }
     const newEvent = await this.prisma.event.create({
       data: {
         ...currentEvent,
