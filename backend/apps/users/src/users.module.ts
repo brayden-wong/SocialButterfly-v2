@@ -1,4 +1,4 @@
-import { HelperModule, UsersDatabaseModule } from '@app/common';
+import { EmailModule, HelperModule, PrismaModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config/dist';
 import { UsersController } from './users.controller';
@@ -10,7 +10,8 @@ import { UsersService } from './users.service';
       isGlobal: true,
       envFilePath: './apps/users/.env'
     }),
-    UsersDatabaseModule,
+    EmailModule,
+    PrismaModule,
     HelperModule,
   ],
   controllers: [UsersController],

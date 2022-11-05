@@ -1,21 +1,36 @@
-import { CreateUserDto, HelperService, UpdateUserDto, UsersDatabaseService } from '@app/common';
+import { CreateUserDto, HelperService, UpdateUserDto, PrismaService, EmailService } from '@app/common';
 import { ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(UsersDatabaseService)
-    private readonly prisma: UsersDatabaseService,
+    @Inject(ConfigService)
+    private readonly config: ConfigService,
+    @Inject(PrismaService)
+    private readonly prisma: PrismaService,
+    @Inject(EmailService)
+    private readonly emailService: EmailService,
     @Inject(HelperService)
     private readonly helperService: HelperService,
   ) { }
 
   async registerUser(user: CreateUserDto) {
     user.email = this.helperService.capitalizeLetter(user.email);
-    console.log(user.email);
     user.password = await this.helperService.hash(user.password);
     const newUser = await this.prisma.user.create({
       data: user
+    });
+
+    this.emailService.sendMail({
+      to: newUser.email,
+      subject: 'registration',
+      template: 'registerUser',
+      context: {
+        name: newUser.first_name,
+        host: this.config.get<string>('overall_host'),
+        id: newUser.id,
+      },
     });
 
     return newUser;
@@ -26,18 +41,18 @@ export class UsersService {
   }
 
   async findUserById(id: string) {
-    return await this.prisma.user.findUnique({ where: { id: id }});
+    return await this.prisma.user.findUnique({ where: { id: id } });
   }
 
   async updateUser(id: string, user: UpdateUserDto) {
-    return await this.prisma.user.update({ 
+    return await this.prisma.user.update({
       where: { id: id },
       data: user
     });
   }
 
   async removeUser(id: string) {
-    return await this.prisma.user.delete({ where: { id: id }});
+    return await this.prisma.user.delete({ where: { id: id } });
   }
 
   async refreshToken(id: string, rt: string) {
@@ -66,6 +81,19 @@ export class UsersService {
         refresh_token: await this.helperService.hash(token, 10)
       }
     });
+  }
+
+  async verifyAccount(id: string) {
+    const verified = await this.prisma.user.findUnique({ where: { id: id }});
+    if(!verified) return false;
+    
+    await this.prisma.user.update({ 
+      where: { id: id },
+      data: {
+        verified: true
+      }
+    });
+    return true;
   }
 
   async validateCredentials(username: string) {

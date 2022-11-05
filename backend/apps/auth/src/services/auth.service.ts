@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { last, lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +43,10 @@ export class AuthService {
   
   async logout(id: string) {
     this.usersClient.send('log out', { id: id });
+  }
+
+  async verifyAccount(id: string) {
+    return await lastValueFrom(this.usersClient.send('verify account', { id: id }));
   }
 
   private async generateTokens(id: string) {

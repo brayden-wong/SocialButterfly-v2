@@ -1,11 +1,11 @@
-import { CreateEventDto, EventsDatabaseService, UpdateEventDto } from '@app/common';
+import { CreateEventDto, PrismaService, UpdateEventDto } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class EventsService {
   constructor(
-    @Inject(EventsDatabaseService)
-    private readonly prisma: EventsDatabaseService
+    @Inject(PrismaService)
+    private readonly prisma: PrismaService
   ) { }
 
   async createEvent(event: CreateEventDto) {

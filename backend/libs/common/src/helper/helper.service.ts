@@ -14,8 +14,6 @@ export class HelperService {
 
   capitalizeLetter(word: string) {
     const char = word.charAt(0).toUpperCase();
-    console.log(char);
-    console.log(char + word.slice(1, word.length));
     return char + word.slice(1, word.length);
   }
 }

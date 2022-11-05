@@ -28,6 +28,8 @@ RUN npx prisma generate
 COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
+# COPY ./dist ./dist
+# COPY ./apps/users/src/views ./dist/apps/users
 
 # 
 CMD ["node", "dist/apps/users/main"]

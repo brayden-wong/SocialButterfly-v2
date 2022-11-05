@@ -15,8 +15,6 @@ export class UsersController {
     return await this.usersService.registerUser(user);
   }
 
-  
-
   @MessagePattern('refresh token')
   async refreshToken(
     @Payload('id')
@@ -52,6 +50,11 @@ export class UsersController {
     rt: string
   ) {
     return await this.usersService.getToken(id, rt);
+  }
+
+  @MessagePattern('verify account')
+  async verifyAccount(@Payload('id') id: string) {
+    return await this.usersService.verifyAccount(id);
   }
 
   @MessagePattern('log out')

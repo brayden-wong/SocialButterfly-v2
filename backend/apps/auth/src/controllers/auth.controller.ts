@@ -1,4 +1,5 @@
-import { Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, UseGuards, Res, Param } from '@nestjs/common';
+import { Response } from 'express';
 import { Public } from '../decorators/public.decorator';
 import { GetUserId } from '../decorators/user-id.decorator';
 import { User } from '../decorators/user.decorator';
@@ -15,6 +16,18 @@ export class AuthController {
   @Post('login')
   async login(@GetUserId() id: string) {
     return await this.authService.login(id);
+  }
+
+  @Public()
+  @Post('verify/:id')
+  async verifyAccount(
+    @Param('id')
+    id: string,
+    @Res() res: Response
+  ) {
+    if(await this.authService.verifyAccount(id))
+      return res.json(true);
+    return res.json(false);
   }
 
   @Public()

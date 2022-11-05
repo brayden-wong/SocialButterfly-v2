@@ -1,4 +1,4 @@
-import { EventsDatabaseModule } from '@app/common';
+import { PrismaModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventsController } from './events.controller';
@@ -10,7 +10,7 @@ import { EventsService } from './events.service';
       isGlobal: true,
       envFilePath: './apps/events/.env'
     }),
-    EventsDatabaseModule,
+    PrismaModule,
   ],
   controllers: [EventsController],
   providers: [EventsService],
