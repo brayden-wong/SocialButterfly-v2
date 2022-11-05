@@ -10,8 +10,8 @@ export class EventsService {
     private readonly eventsClient: ClientProxy
   ) { }
   
-  async createEvent(event: CreateEventDto) {
-    return await lastValueFrom(this.eventsClient.send('create event', { event: event }));
+  async createEvent(id: string, event: CreateEventDto) {
+    return await lastValueFrom(this.eventsClient.send('create event', { id: id, event: event }));
   }
 
   async findAllEvents() {

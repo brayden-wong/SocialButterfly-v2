@@ -8,7 +8,6 @@ async function bootstrap() {
   const config = app.get<ConfigService>(ConfigService);
   const host = config.get<string>('host');
   const port = config.get<number>('port');
-  console.log(port, host);
   app.connectMicroservice({
     transport: Transport.TCP,
     options: {

@@ -8,10 +8,14 @@ export class EventsService {
     private readonly prisma: PrismaService
   ) { }
 
-  async createEvent(event: CreateEventDto) {
-    const { address, ...currentEvent } = event;
+  async createEvent(id: string, event: CreateEventDto) {
+    const { address, date, ...currentEvent } = event;
+    const newDate = new Date(date + ` ${currentEvent.time}`);
+    console.log(`${newDate.getHours()} ${newDate.getMinutes()} ${newDate.getSeconds()}`);
     const newEvent = await this.prisma.event.create({
       data: {
+        user_id: id,
+        date: new Date(date + ` ${currentEvent.time}`),
         ...currentEvent,
         address: {
           create: address

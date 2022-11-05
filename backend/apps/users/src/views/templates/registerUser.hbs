@@ -1,39 +1,39 @@
 <html>
 
 <style>
+  * {
+    font-size: 1.15rem;
+    color: #000;
+
+  }
+
   .color {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #000;
   }
 
-  .background {
-    background-color: #F7FBFC;
-  }
-
-  .header {
-    font-weight: 500;
-    float: left;
-  }
-
   .confirm {
-    background-color: #769FCD;
-    padding: 8px 12px;
+    font-size: .9rem;
+    background-color: #B9D7EA;
+    padding: 8px 16px;
     color: #000;
+    border: 2px solid black;
+    border-radius: 8px;
   }
+
 </style>
 
 <body>
   <div>
-    <h2 class="color background" style="float:left">
+    <p class="color">
       Hello
-      <p class='header'>{{name}},</p>
-    </h2>
-    <br>
-    <p>Thank you for registering for the Social Butterfly</p>
-    <p>Please confirm your account here</p>
+      <span>{{name}},</span>
+    </p>
+    <p>Thank you for registering for The Social Butterfly</p>
+    <p>Please verify your account here</p>
     <br>
     <form action='http://{{host}}:8080/auth/verify/{{id}}' method='post'>
-      <button class='confirm'>Confirm</button>
+      <button class='confirm'>verify</button>
     </form>
   </div>
 </body>

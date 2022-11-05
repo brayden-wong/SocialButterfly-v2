@@ -24,7 +24,7 @@ export class UsersService {
 
     this.emailService.sendMail({
       to: newUser.email,
-      subject: 'registration',
+      subject: 'account activation',
       template: 'registerUser',
       context: {
         name: newUser.first_name,

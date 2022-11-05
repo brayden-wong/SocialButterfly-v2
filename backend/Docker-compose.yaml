@@ -39,7 +39,7 @@ services:
       dockerfile: ./apps/events/Dockerfile
       target: development
     command: >
-      sh -c "npx prisma migrate dev --name init && npm run start:dev events"
+      sh -c "npm run start:dev events"
     env_file:
       - ./apps/events/.env
     networks:

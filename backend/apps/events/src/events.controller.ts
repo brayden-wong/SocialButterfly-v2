@@ -9,10 +9,12 @@ export class EventsController {
 
   @MessagePattern('create event')
   async createEvent(
+    @Payload('id')
+    id: string,
     @Payload('event')
     event: CreateEventDto
   ) {
-    return await this.eventsService.createEvent(event);
+    return await this.eventsService.createEvent(id, event);
   }
 
   @MessagePattern('find all events')

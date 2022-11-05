@@ -14,12 +14,11 @@ model User {
   id              String  @id @default(uuid())
   first_name      String
   last_name       String
-  email           String
-  secondary_email String?
+  email           String @unique
+  secondary_email String? @unique
   password        String
 
   refresh_token String?
-  verify_key    String?
   verified      Boolean @default(false)
 
   rsvp     Event?  @relation(name: "rsvp", fields: [event_id], references: [id])
@@ -34,11 +33,11 @@ model Event {
   id         String   @id @default(uuid())
   event_name String
   user       User?    @relation(name: "host", fields: [user_id], references: [id])
-  user_id    String?  @unique
+  user_id    String?  
   date       DateTime
   time       String
 
-  online          Boolean
+  online          Boolean  @default(false)
   available_slots Int?
   rsvp_list       User[]   @relation(name: "rsvp")
   address         Address?

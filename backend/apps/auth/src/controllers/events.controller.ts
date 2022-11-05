@@ -1,5 +1,7 @@
 import { CreateEventDto, UpdateEventDto } from "@app/common";
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Public } from "../decorators/public.decorator";
+import { GetUserId } from "../decorators/user-id.decorator";
 import { EventsService } from "../services/events.service";
 
 @Controller('events')
@@ -8,17 +10,20 @@ export class EventsController {
 
   @Post('create')
   async createEvent(
+    @GetUserId() id: string,
     @Body('event')
     event: CreateEventDto
   ) {
-    return await this.eventsService.createEvent(event);
+    return await this.eventsService.createEvent(id, event);
   }
 
+  @Public()
   @Get()
   async findAllEvents() {
     return await this.eventsService.findAllEvents();
   }
 
+  @Public()
   @Get(':id')
   async findEventById(
     @Param('id')
