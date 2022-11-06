@@ -84,16 +84,40 @@ export class UsersService {
   }
 
   async verifyAccount(id: string) {
-    const verified = await this.prisma.user.findUnique({ where: { id: id }});
-    if(!verified) return false;
-    
-    await this.prisma.user.update({ 
+    const verified = await this.prisma.user.findUnique({ where: { id: id } });
+    if (!verified) return false;
+
+    await this.prisma.user.update({
       where: { id: id },
       data: {
         verified: true
       }
     });
     return true;
+  }
+
+  async getEmail(id: string) {
+    const { first_name, email, secondary_email } = await this.prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        first_name: true,
+        email: true,
+        secondary_email: true
+      }
+    });
+    if (secondary_email)
+      return {
+        name: first_name,
+        emails: [
+          email,
+          secondary_email
+        ]
+      }
+        ;
+    return {
+      name: first_name,
+      emails: [email]
+    };
   }
 
   async validateCredentials(username: string) {

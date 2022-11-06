@@ -10,10 +10,12 @@ export class EventsService {
     private readonly eventsClient: ClientProxy
   ) { }
   
+  //POST
   async createEvent(id: string, event: CreateEventDto) {
     return await lastValueFrom(this.eventsClient.send('create event', { id: id, event: event }));
   }
 
+  //GET
   async findAllEvents() {
     return await lastValueFrom(this.eventsClient.send('find all events', { }));
   }
@@ -22,10 +24,20 @@ export class EventsService {
     return await lastValueFrom(this.eventsClient.send('find event by id', { id: id }));
   }
 
+  async findEventsByUser(id: string) {
+    return await lastValueFrom(this.eventsClient.send('find event by user', { id: id }));
+  }
+
+  //PATCH
   async updateEvent(id: string, event: UpdateEventDto) {
     return await lastValueFrom(this.eventsClient.send('update event', { id: id, event: event }));
   }
 
+  async rsvp(id: { event_id: string, user_id: string }) {
+    return await lastValueFrom(this.eventsClient.send('rsvp event', id));
+  }
+
+  //DELETE
   async removeEvent(id: string) {
     return await lastValueFrom(this.eventsClient.send('remove event', { id: id }));
   }

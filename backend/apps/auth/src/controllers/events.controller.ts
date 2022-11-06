@@ -17,19 +17,15 @@ export class EventsController {
     return await this.eventsService.createEvent(id, event);
   }
 
-  @Public()
-  @Get()
-  async findAllEvents() {
-    return await this.eventsService.findAllEvents();
-  }
-
-  @Public()
-  @Get(':id')
-  async findEventById(
+  @Patch('/rsvp/:id')
+  async rsvp(
     @Param('id')
-    id: string
+    event_id: string,
+    @GetUserId()
+    user_id: string
   ) {
-    return await this.eventsService.findEventById(id);
+    console.log(`${event_id} ${user_id}`);
+    return await this.eventsService.rsvp({ event_id: event_id, user_id: user_id });
   }
 
   @Patch(':id')
@@ -48,5 +44,28 @@ export class EventsController {
     id: string
   ) {
     return await this.eventsService.removeEvent(id);
+  }
+
+  @Public()
+  @Get()
+  async findAllEvents() {
+    return await this.eventsService.findAllEvents();
+  }
+
+  @Public()
+  @Get(':id')
+  async findEventById(
+    @Param('id')
+    id: string
+  ) {
+    return await this.eventsService.findEventById(id);
+  }
+
+  @Public()
+  @Get('/user/:id')
+  async getEventsByUser(
+    @Param('id') id: string
+  ) {
+    return await this.eventsService.findEventsByUser(id);
   }
 }

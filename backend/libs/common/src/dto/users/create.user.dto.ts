@@ -6,6 +6,5 @@ export class CreateUserDto {
   password: string;
 
   refresh_token?: string;
-  verify_key?: string;
   verified: boolean;
 }

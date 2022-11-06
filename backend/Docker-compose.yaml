@@ -10,6 +10,8 @@ services:
     command: npm run start:dev auth
     env_file:
       - ./apps/auth/.env
+    environment:
+      TZ: "America/Denver"
     ports: 
       - 8080:8080
     networks:
@@ -27,6 +29,8 @@ services:
       sh -c "npx prisma migrate dev --name init && npm run start:dev users"
     env_file:
       - ./apps/users/.env
+    environment:
+      TZ: "America/Denver"
     networks:
       - socialbutterfly
     volumes:
@@ -42,6 +46,8 @@ services:
       sh -c "npm run start:dev events"
     env_file:
       - ./apps/events/.env
+    environment:
+      TZ: "America/Denver"
     networks:
       - socialbutterfly
     volumes:

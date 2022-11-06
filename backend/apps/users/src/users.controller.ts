@@ -52,6 +52,14 @@ export class UsersController {
     return await this.usersService.getToken(id, rt);
   }
 
+  @MessagePattern('get email')
+  async getEmail(
+    @Payload('id')
+    id: string
+  ) {
+    return await this.usersService.getEmail(id);
+  }
+
   @MessagePattern('verify account')
   async verifyAccount(@Payload('id') id: string) {
     return await this.usersService.verifyAccount(id);

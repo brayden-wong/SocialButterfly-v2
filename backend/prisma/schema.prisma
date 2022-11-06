@@ -35,7 +35,6 @@ model Event {
   user       User?    @relation(name: "host", fields: [user_id], references: [id])
   user_id    String?  
   date       DateTime
-  time       String
 
   online          Boolean  @default(false)
   available_slots Int?

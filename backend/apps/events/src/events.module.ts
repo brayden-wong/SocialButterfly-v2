@@ -1,6 +1,7 @@
-import { PrismaModule } from '@app/common';
+import { EmailModule, PrismaModule, USERS_SERVICE } from '@app/common';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 
@@ -10,7 +11,22 @@ import { EventsService } from './events.service';
       isGlobal: true,
       envFilePath: './apps/events/.env'
     }),
+    ClientsModule.registerAsync([
+      {
+        name: USERS_SERVICE,
+        imports: [ConfigModule],
+        useFactory: (config: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: config.get<string>('users_host'),
+            port: config.get<number>('users_port')
+          }
+        }),
+        inject: [ConfigService]
+      }
+    ]),
     PrismaModule,
+    EmailModule,
   ],
   controllers: [EventsController],
   providers: [EventsService],
