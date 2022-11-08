@@ -2,6 +2,7 @@ import { EmailModule, PrismaModule, USERS_SERVICE } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ScheduleModule } from '@nestjs/schedule';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 
@@ -27,6 +28,7 @@ import { EventsService } from './events.service';
     ]),
     PrismaModule,
     EmailModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [EventsController],
   providers: [EventsService],

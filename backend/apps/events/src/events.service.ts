@@ -1,7 +1,10 @@
-import { CreateEventDto, EmailService, PrismaService, UpdateEventDto, USERS_SERVICE } from '@app/common';
+import { CreateEventDto, EmailService, PrismaService, 
+  UpdateEventDto, FilterOptions, USERS_SERVICE } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { Cron } from '@nestjs/schedule';
 import { lastValueFrom } from 'rxjs';
+import { EmailPayload } from './classes/email.payload';
 
 @Injectable()
 export class EventsService {
@@ -64,6 +67,27 @@ export class EventsService {
     return null;
   }
 
+  async findByFilters(options: FilterOptions) {
+    const { name, tags, online, dates } = options;
+    const start = new Date(dates[0]);
+    const end = dates[1] ? new Date(dates[1]) : this.nextDay(start.toISOString());
+    return await this.prisma.event.findMany({
+      where: {
+        event_name: {
+          search: name
+        },
+        tags: {
+          hasSome: [...tags]
+        },
+        online: online ? online : false,
+        date: {
+          gte: start,
+          lt: end
+        }
+      }
+    });
+  }
+
   //PATCH
   async updateEvent(id: string, event: UpdateEventDto) {
     const { address, ...currentEvent } = event;
@@ -106,7 +130,7 @@ export class EventsService {
         address: true,
       }
     });
-    const data: { name: string, emails: string[] } = await lastValueFrom(this.usersClient.send('get email', { id: user_id }));
+    const data: EmailPayload = await lastValueFrom(this.usersClient.send('get email', { id: user_id }));
     data.emails.forEach(email => {
       this.emailService.sendMail({
         to: email,
@@ -128,13 +152,56 @@ export class EventsService {
     return null;
   }
 
+  //test this function when you can write unRSVP email first
+  async unRSVP(event_id: string, user_id: string) {
+    const event = await this.prisma.event.update({
+      where: {
+        id: event_id
+      },
+      data: {
+        rsvp_list: {
+          disconnect: {
+            id: user_id
+          }
+        },
+        available_slots: {
+          increment: 1
+        }
+      }, select: {
+        id: true,
+        event_name: true,
+        date: true
+      }
+    });
+    const data: EmailPayload = await lastValueFrom(this.usersClient.send('get email', { id: user_id }));
+    data.emails.forEach(email => {
+      this.emailService.sendMail({
+        to: email,
+        subject: `rsvp removal`,
+        template: 'rsvp_removal',
+        context: {
+          name: data.name,
+          event: event.event_name
+        }
+      });
+    })
+
+    if(event) return event;
+    return null;
+  }
+
   //DELETE
   async removeEvent(id: string) {
     return await this.prisma.event.delete({ where: { id: id }});
   }
 
-  //Helper Functions
+  //Cron
+  @Cron('* * 8 * * 1-7')
+  handleEventCheck() {
+    console.log('hello world')
+  }
 
+  //Helper Functions
   capitalizeWords(event: string) {
     const words = event.split(' ');
     words.forEach((word, index) => {
@@ -144,11 +211,18 @@ export class EventsService {
   }
 
   convertTime(hours: number, minutes: number) {
-    console.log(minutes);
     if(hours > 12)
       return hours > 10 ? `0${hours - 12}` : (hours - 12) + `:${minutes} PM`;
     else {
       return hours > 10 ? `0${hours}` : hours + `:${minutes} AM`;
     }
+  }
+
+  nextDay(currentDate: string) {
+    const date = new Date(currentDate);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate() + 1;
+    return new Date(year, month, day);
   }
 }

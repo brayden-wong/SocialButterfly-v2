@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -14,7 +15,7 @@ model User {
   id              String  @id @default(uuid())
   first_name      String
   last_name       String
-  email           String @unique
+  email           String  @unique
   secondary_email String? @unique
   password        String
 
@@ -33,9 +34,10 @@ model Event {
   id         String   @id @default(uuid())
   event_name String
   user       User?    @relation(name: "host", fields: [user_id], references: [id])
-  user_id    String?  
+  user_id    String?
   date       DateTime
 
+  tags            String[] @default([])
   online          Boolean  @default(false)
   available_slots Int?
   rsvp_list       User[]   @relation(name: "rsvp")

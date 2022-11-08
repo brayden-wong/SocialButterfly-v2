@@ -1,4 +1,4 @@
-import { CreateEventDto, EVENTS_SERVICE, UpdateEventDto } from "@app/common";
+import { CreateEventDto, EVENTS_SERVICE, FilterOptions, UpdateEventDto } from "@app/common";
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { lastValueFrom } from "rxjs";
@@ -28,6 +28,10 @@ export class EventsService {
     return await lastValueFrom(this.eventsClient.send('find event by user', { id: id }));
   }
 
+  async filterEvents(options: FilterOptions) {
+    return await lastValueFrom(this.eventsClient.send('filter events', { options: options }));
+  }
+
   //PATCH
   async updateEvent(id: string, event: UpdateEventDto) {
     return await lastValueFrom(this.eventsClient.send('update event', { id: id, event: event }));
@@ -35,6 +39,10 @@ export class EventsService {
 
   async rsvp(id: { event_id: string, user_id: string }) {
     return await lastValueFrom(this.eventsClient.send('rsvp event', id));
+  }
+
+  async unRSVP(id: { event_id: string, user_id: string }) {
+    return await lastValueFrom(this.eventsClient.send('unRSVP event', id));
   }
 
   //DELETE

@@ -1,4 +1,4 @@
-import { CreateEventDto, UpdateEventDto } from '@app/common';
+import { CreateEventDto, UpdateEventDto, FilterOptions } from '@app/common';
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { EventsService } from './events.service';
@@ -36,6 +36,14 @@ export class EventsController {
     return await this.eventsService.findEventsByUser(id);
   }
 
+  @MessagePattern('filter events')
+  async filterEvents(
+    @Payload('options')
+    options: FilterOptions
+  ) {
+    return await this.eventsService.findByFilters(options);
+  }
+
   //PATCH
   @MessagePattern('update event')
   async updateEvent(
@@ -55,6 +63,16 @@ export class EventsController {
     user_id: string
   ) {
     return await this.eventsService.rsvp(event_id, user_id);
+  }
+
+  @MessagePattern('unRSVP event')
+  async unRSVP(
+    @Payload('event_id')
+    event_id: string,
+    @Payload('user_id')
+    user_id: string
+  ) {
+    return await this.eventsService.unRSVP(event_id, user_id);
   }
 
   //DELETE

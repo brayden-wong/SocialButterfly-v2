@@ -1,4 +1,4 @@
-import { CreateEventDto, UpdateEventDto } from "@app/common";
+import { CreateEventDto, FilterOptions, UpdateEventDto } from "@app/common";
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { Public } from "../decorators/public.decorator";
 import { GetUserId } from "../decorators/user-id.decorator";
@@ -8,6 +8,7 @@ import { EventsService } from "../services/events.service";
 export class EventsController {
   constructor(private readonly eventsService: EventsService) { }
 
+  //POST
   @Post('create')
   async createEvent(
     @GetUserId() id: string,
@@ -17,6 +18,7 @@ export class EventsController {
     return await this.eventsService.createEvent(id, event);
   }
 
+  //PATCH
   @Patch('/rsvp/:id')
   async rsvp(
     @Param('id')
@@ -24,8 +26,17 @@ export class EventsController {
     @GetUserId()
     user_id: string
   ) {
-    console.log(`${event_id} ${user_id}`);
     return await this.eventsService.rsvp({ event_id: event_id, user_id: user_id });
+  }
+
+  @Patch('rsvp/remove/:id')
+  async unRSVP(
+    @Param('id')
+    event_id: string,
+    @GetUserId()
+    user_id: string
+  ) {
+    return await this.eventsService.unRSVP({ event_id: event_id, user_id: user_id });
   }
 
   @Patch(':id')
@@ -38,12 +49,23 @@ export class EventsController {
     return await this.eventsService.updateEvent(id, event);
   }
 
+  //DELETE
   @Delete(':id')
   async removeEvent(
     @Param('id')
     id: string
   ) {
     return await this.eventsService.removeEvent(id);
+  }
+
+  //GET
+  @Public()
+  @Get('filters')
+  async filterEvents(
+    @Body('options')
+    options: FilterOptions
+  ) {
+    return await this.eventsService.filterEvents(options);
   }
 
   @Public()
