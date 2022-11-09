@@ -1,13 +1,14 @@
 import { CreateEventDto, EmailService, PrismaService, 
   UpdateEventDto, FilterOptions, USERS_SERVICE } from '@app/common';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { lastValueFrom } from 'rxjs';
 import { EmailPayload } from './classes/email.payload';
 
 @Injectable()
 export class EventsService {
+  private logger = new Logger(EventsService.name);
   constructor(
     @Inject(PrismaService)
     private readonly prisma: PrismaService,
@@ -20,11 +21,14 @@ export class EventsService {
   //POST
   async createEvent(id: string, event: CreateEventDto) {
     const { event_name, address, date, time, ...currentEvent } = event;
+    const newDate = new Date(date);
+    newDate.setHours(5);
+    newDate.setMinutes(30);
     const newEvent = await this.prisma.event.create({
       data: {
         event_name: this.capitalizeWords(event_name),
         user_id: id,
-        date: new Date(date + ` ${time}`),
+        date: newDate,
         ...currentEvent,
         address: {
           create: address
@@ -196,9 +200,19 @@ export class EventsService {
   }
 
   //Cron
-  @Cron('* * 8 * * 1-7')
-  handleEventCheck() {
-    console.log('hello world')
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  async handleEventCheck() {
+    console.log(this.nextWeek(new Date()));
+    console.log(this.nextDay(this.nextWeek(new Date()).toISOString()));
+    const events = await this.prisma.event.findMany({
+      where: {
+        date: {
+          gte: this.nextWeek(new Date()),
+          lt: this.nextDay(this.nextWeek(new Date()).toISOString())
+        }
+      }
+    });
+    console.log(events);
   }
 
   //Helper Functions
@@ -224,5 +238,13 @@ export class EventsService {
     const month = date.getMonth();
     const day = date.getDate() + 1;
     return new Date(year, month, day);
+  }
+
+  nextWeek(date: Date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
+  }
+
+  convertToMilitary(totalTime: string) {
+
   }
 }
