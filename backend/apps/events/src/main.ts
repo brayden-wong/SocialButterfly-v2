@@ -5,6 +5,13 @@ import { EventsModule } from './events.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(EventsModule);
+  //   transport: Transport.TCP,
+  //   options: {
+  //     host: 'events',
+  //     port: 3500
+  //   }
+  // });
+  // await app.listen();
   const config = app.get<ConfigService>(ConfigService);
   const host = config.get<string>('host');
   const port = config.get<number>('port');
@@ -16,6 +23,6 @@ async function bootstrap() {
     }
   });
   await app.startAllMicroservices();
-  await app.listen(port + 1);
+  await app.init();
 }
 bootstrap();

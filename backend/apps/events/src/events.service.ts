@@ -199,20 +199,51 @@ export class EventsService {
     return await this.prisma.event.delete({ where: { id: id }});
   }
 
-  //Cron
+  Cron
   @Cron(CronExpression.EVERY_5_SECONDS)
   async handleEventCheck() {
-    console.log(this.nextWeek(new Date()));
-    console.log(this.nextDay(this.nextWeek(new Date()).toISOString()));
     const events = await this.prisma.event.findMany({
       where: {
         date: {
           gte: this.nextWeek(new Date()),
           lt: this.nextDay(this.nextWeek(new Date()).toISOString())
         }
+      }, select: {
+        event_name: true,
+        rsvp_list: true,
+        online: true,
+        date: true,
+        address: true
       }
-    });
+    }); 
     console.log(events);
+    // events.forEach(async event => {
+    //   for(let i = 0; i < event.rsvp_list.length; i++) {
+    //     const user = await lastValueFrom(this.usersClient.send('get email', { id: event.rsvp_list[i] }));
+    //     console.log('hello', user);
+    //   }
+    // });
+    // for(let i = 0; i < events.length; i++) {
+    //   if(events[i].rsvp_list.length < 1) continue;
+    //   for(let j = 0; j < events[i].rsvp_list.length; j++) {
+    //     const userData: EmailPayload = await lastValueFrom(this.usersClient.send('get email', { id: events[i].rsvp_list[j].id }));
+        // userData.emails.forEach(email => {
+        //   this.emailService.sendMail({
+        //     to: email,
+        //     subject: 'Upcoming Event',
+        //     template: 'event_reminder',
+        //     context: {
+        //       name: userData.name,
+        //       event: events[i].event_name,
+        //       date: events[i].date,
+        //       time: `${events[i].date.getHours()}:${events[i].date.getMinutes()} ${this.getAMPM(events[i].date.getHours())}`,
+        //       online: events[i].online,
+        //       address: events[i].address
+        //     }
+        //   });
+        // });
+    //   }
+    // }
   }
 
   //Helper Functions
@@ -246,5 +277,11 @@ export class EventsService {
 
   convertToMilitary(totalTime: string) {
 
+  }
+
+  getAMPM(hours: number) {
+    if(hours > 12)
+      return 'PM';
+    return 'AM';
   }
 }
