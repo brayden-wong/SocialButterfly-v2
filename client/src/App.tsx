@@ -7,7 +7,6 @@ import { Dashboard } from './pages/Dashboard';
 
 const App = () => {
   const userContext = UserContext;
-  console.log(userContext.Consumer);
   return (
     <BrowserRouter>
       <UserContext.Provider value={{ access_token: '', refresh_token: '' }} >

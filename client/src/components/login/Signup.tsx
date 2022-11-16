@@ -20,61 +20,74 @@ export const Signup = (props: SignupProps) => {
   }
 
   return (
-    <div className={`z-[5] absolute top-[18%] left-[55%] w-[40vw] h-[60%] p-[2vw] bg-[#D6E6F2] 
-      rounded-[1.5vw] shadow-2xl ${props.signup ? 'translate-y-0 duration-[900ms]'
-        : 'translate-y-[-100vw] duration-[900ms]'}`}>
-      <div className="text-center h-auto scroll_view">
-        <h1 className="text-[2vw]">Sign Up</h1>
+    <div className={`absolute top-[25%] left-[60%] w-[30vw] h-[20vw] bg-slate-800 rounded-2xl ${props.signup ?
+      'translate-y-0 duration-[800ms]' : 'translate-y-[-100vw] duration-[800ms]'}`}>
+      <div className='flex justify-center mb-4 w-full items-center h-1/6'>
+        <h1 className='relative top-2 py-4 text-5xl text-[#F5F5F5]'>Sign Up</h1>
       </div>
-      <div className="text-center">
-        <div className="input_container">
-          <input className="contact_input" type='text' value={firstName}
-            onChange={e => setFirstName(e.currentTarget.value)} />
-          <label className="placeholder_text">
-            <div className='text'>first name</div>
-            <UserIcon className='loginIcon' />
-          </label>
+      <form className='relative w-full h-3/4 flex flex-col justify-around '>
+        <div className='flex items-center justify-center'>
+          <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
+            <label className='w-[4vw] text-right text-gray-300 text-md tracking-wider font-semibold'>
+              First Name
+            </label>
+            <div className='flex'>
+              <input className='outline-none font-medium
+                  w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setFirstName(e.target.value);
+                }} />
+              <UserIcon className='relative right-0 w-10 text-gray-300' />
+            </div>
+          </div>
+          <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
+            <label className='w-[4vw] text-right text-white-milk text-md tracking-wider font-semibold'>
+              Last Name
+            </label>
+            <div className='flex'>
+              <input className='outline-none font-medium
+                  w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setLastName(e.target.value);
+                }} />
+              <UserIcon className='relative right-0 w-10 text-white-milk' />
+            </div>
+          </div>
         </div>
-        <div className="input_container">
-          <input className="contact_input" type='text' value={lastName}
-            onChange={e => setLastName(e.currentTarget.value)} />
-          <label className="placeholder_text">
-            <div className='text'>last name</div>
-            <UserIcon className='loginIcon' />
-          </label>
+        <div className='flex justify-center'>
+          <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
+            <label className='w-[4vw] text-right text-white-milk text-md tracking-wider font-semibold'>
+              Password
+            </label>
+            <div className='flex'>
+              <input className='outline-none font-medium
+                  w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setPassword(e.target.value);
+                }} />
+              <KeyIcon className='relative right-[-2px] w-10 text-white-milk' />
+            </div>
+          </div>
+          <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
+            <label className='w-[4vw] text-right text-white-milk text-md tracking-wider font-semibold'>
+              Email
+            </label>
+            <div className='flex'>
+              <input className='outline-none font-medium
+                  w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setConfirmPassword(e.target.value);
+                }} />
+              <EnvelopeIcon className='relative right-[-2px] w-10 text-white-milk' />
+            </div>
+          </div>
         </div>
-        <div className="input_container">
-          <input className="contact_input" type='text' value={email}
-            onChange={e => setEmail(e.currentTarget.value)} />
-          <label className="placeholder_text">
-            <div className='text'>email</div>
-            <EnvelopeIcon className='loginIcon' />
-          </label>
-        </div>
-        <div className="input_container">
-          <input className="contact_input" type='password' value={password}
-            onChange={e => setPassword(e.currentTarget.value)} />
-          <label className="placeholder_text">
-            <div className='text'>password</div>
-            <KeyIcon className='loginIcon' />
-          </label>
-        </div>
-        <div className="input_container">
-          <input className="contact_input" type='password' value={confirmPassword}
-            onChange={e => setConfirmPassword(e.currentTarget.value)} />
-          <label className="placeholder_text">
-            <div className='text'>confirm password</div>
-            <KeyIcon className='loginIcon' />
-          </label>
-        </div>
-        <div className='credentials' >
-          <p className="float-left cursor-pointer mr-4" onClick={() => props.setSignup(!props.signup)}>
-            already have an account?
+        <div className='flex justify-center items-center gap-12'>
+          <button className='py-2 px-12 text-slate-800 font-semibold bg-teal-400 rounded-md duration-300 hover:text-white-milk hover:bg-teal-600 hover:duration-300'>
+            Sign Up
+          </button>
+          <p className='text-white-milk text-lg font-semibold'>
+            <span className='mr-6 cursor-pointer hover:text-slate-300 hover:duration-400 duration-300'
+              onClick={() => props.setSignup(!props.signup)}>Have an account? Sign In</span>
           </p>
         </div>
-        <button className='w-[12vw] py-3 bg-[#D6E6F2] border-2 border-[#000] duration-300 rounded-2xl relative
-          hover:bg-[#769FCD] hover:border-[#769FCD] hover:border-2 hover:duration-300' onClick={() => handleSignUp}>Sign Up</button>
-      </div>
+      </form>
     </div>
   )
 }

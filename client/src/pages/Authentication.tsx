@@ -8,19 +8,15 @@ export const Authentication = () => {
   const [resetPassword, setResetPassword] = useState(false);
 
   return (
-    <div className='bg-[#F7FBFC]'>
-      <div className='w-[50%] h-[7.5vw] bg-[#D6E6F2] rounded-br-[3vw] shadow-2xl relative' >
-        <h1 className='text-[4vw] text-center pt-[.5vw]'>Social Butterfly</h1>
+    <div className='bg-zinc-900'>
+      <div className='w-[50%] h-[7.5vw] bg-slate-800 rounded-br-[3vw] relative' >
+        <h1 className='text-[4vw] tracking-wider text-gray-300 text-center pt-[.5vw]'>Social Propaganda</h1>
       </div>
       <div className='w-[100%] h-[90vh]'>
-        <div className="w-[50%] h-[100%] float-left bg-[#F7FBFC]">
-          <div className='spinfucker'>
-            <div className='butterfly_animation'>
-              <GiButterfly className='relative butterfly_size ' />
-            </div>
-          </div>
+        <div className="w-[50%] h-[100%] float-left bg-zinc-900">
+
         </div>
-        <div className="w-[50%] h-[100%] float-left bg-[#F7FBFC]">
+        <div className="w-[50%] h-[100%] float-left bg-zinc-900">
           <Signup signup={signup} setSignup={() => setSignup(!signup)} />
           <Login signup={signup} setSignup={() => setSignup(!signup)}
             resetPassword={resetPassword} setResetPassword={() => setResetPassword(!resetPassword)} />
