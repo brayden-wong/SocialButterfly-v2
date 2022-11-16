@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
-import { UserIcon, KeyIcon } from '@heroicons/react/24/solid';
+import { UserIcon, KeyIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { LoginProps } from "./credentials.interface";
 import axios from "axios";
 import { User } from "../../interfaces/user";
@@ -10,7 +10,6 @@ export const Login = (props: LoginProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [viewPassword, setViewPassword] = useState<'text' | 'password'>('password');
-
   const navigate = useNavigate();
 
   const setBlank = () => {
@@ -18,11 +17,7 @@ export const Login = (props: LoginProps) => {
     setPassword('');
   }
 
-  const changeViewState = () => {
-    if(viewPassword === 'text')
-      setViewPassword('password');
-    setViewPassword('text');
-  }
+  const handleViewPassword = () => viewPassword === 'password' ? setViewPassword('text') : setViewPassword('password');
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -44,7 +39,6 @@ export const Login = (props: LoginProps) => {
     }
   }
 
-  //FIX USER LOGIN PAGE FORM THING
   return (
     <div className={`relative top-[15%] left-[25%] w-[25vw] h-[20vw] bg-slate-800 rounded-2xl shadow ${props.signup ?
       'translate-y-[100vw] duration-[800ms]' : 'translate-y-0 duration-[800ms]'}`}>
@@ -73,7 +67,9 @@ export const Login = (props: LoginProps) => {
               type={viewPassword} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setPassword(e.target.value);
               }} />
-            <KeyIcon className='relative mx-0 right-0 w-10 text-white-milk' />
+            {viewPassword === 'password' ? <EyeIcon className='absolute w-5 pt-4 right-[6.5vw] text-white-milk cursor-pointer'
+              onClick={() => handleViewPassword()}/> : <EyeSlashIcon className='absolute w-5 pt-4 right-[6.5vw] text-white-milk cursor-pointer' onClick={() => handleViewPassword()} />}
+            <KeyIcon className='relative mx-0 right-[-2px] w-10 text-white-milk' />
           </div>
         </div>
         <div className='flex justify-evenly items-center'>
@@ -94,49 +90,5 @@ export const Login = (props: LoginProps) => {
         </div>
       </form>
     </div>
-    // <div className={`absolute top-[15%] left-[55%] w-[25vw] h-20] bg-slate-800 rounded-2xl shadow ${props.signup ?
-    //   'translate-y-[100vw] duration-[900ms]' : 'translate-y-0 duration-[900ms]'}`}>
-    //   <div className='flex items-center justify-center h-1/3'>
-    //     <h1 className='relative py-4 text-[2.5vw] text-white-milk'> Sign In</h1>
-    //   </div>
-    //   <form className='pb-4 relative w-full h-2/3 flex flex-col justify-around'>
-    //     <div className='flex items-center justify-center'>
-    //       <label className='w-[4vw] text-white-milk tracking-wdier text-md font-semibold'>
-    //         Username
-    //       </label>
-    //       <div className='flex'>
-    //         <input className='outline-none font-medium w-full text-gray-300'
-    //           type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
-    //         <UserIcon className='w-10 right-0 text-white-milk' />
-    //       </div>
-    //     </div>
-    //     <div className='flex items-center justify-center'>
-    //       <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
-    //         <label className='w-[4vw] text-right text-gray-300 text-md tracking-wider font-semibold'>
-    //           First Name
-    //         </label>
-    //         <div className='flex'>
-    //           <input className='outline-none font-medium
-    //                 w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-    //               setEmail(e.target.value);
-    //             }} />
-    //           <UserIcon className='relative right-0 w-10 text-gray-300' />
-    //         </div>
-    //       </div>
-    //       <div className='flex justify-center gap-[.5vw] items-center w-[45%]' >
-    //         <label className='w-[4vw] text-right text-white-milk text-md tracking-wider font-semibold'>
-    //           Last Name
-    //         </label>
-    //         <div className='flex'>
-    //           <input className='outline-none font-medium
-    //                 w-full text-gray-300' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-    //               setEmail(e.target.value);
-    //             }} />
-    //           <UserIcon className='relative right-0 w-10 text-white-milk' />
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </form>
-    // </div>
   )
 }

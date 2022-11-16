@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UserIcon, KeyIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
+import { UserIcon, KeyIcon, EnvelopeIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { SignupProps } from "./credentials.interface";
 import axios from 'axios';
 
@@ -8,10 +8,12 @@ export const Signup = (props: SignupProps) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [viewPassword, setViewPassword] = useState<'text' | 'password'>('password');
+  const [viewPassword, setViewPassword] = useState<'password' | 'text'>('password');
+
+  const handleViewPassword = () => viewPassword === 'password' ? setViewPassword('text') : setViewPassword('password');
 
   const handleSignUp = () => {
-    
+
   }
 
   return (
@@ -27,7 +29,7 @@ export const Signup = (props: SignupProps) => {
               First Name
             </label>
             <div className='flex'>
-              <input className='outline-none font-medium w-[10vw] text-gray-300' 
+              <input className='outline-none font-medium w-[10vw] text-gray-300'
                 type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFirstName(e.target.value);
                 }} />
@@ -39,7 +41,7 @@ export const Signup = (props: SignupProps) => {
               Last Name
             </label>
             <div className='flex'>
-              <input className='outline-none font-medium w-[10vw] text-gray-300' 
+              <input className='outline-none font-medium w-[10vw] text-gray-300'
                 type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setLastName(e.target.value);
                 }} />
@@ -53,11 +55,13 @@ export const Signup = (props: SignupProps) => {
               Password
             </label>
             <div className='flex'>
-              <input className='outline-none font-medium w-[9.5vw] text-gray-300' 
+              <input className='outline-none font-medium w-[9.5vw] text-gray-300'
                 type={viewPassword} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPassword(e.target.value);
                 }} />
-              <KeyIcon className='relative right-[-2px] w-10 text-white-milk' />
+              {viewPassword === 'password' ? <EyeIcon className='absolute  w-5 left-[13.5vw] pt-3.5 text-white-milk' onClick={() => handleViewPassword()} /> : <EyeSlashIcon className='absolute  w-5 left-[13.5vw] pt-3.5 text-white-milk' onClick={() => handleViewPassword()} />}
+              <KeyIcon className='relative right-[-2px] w-10 text-white-milk'
+              />
             </div>
           </div>
           <div className='flex justify-center gap-2 items-center w-full' >
@@ -65,7 +69,7 @@ export const Signup = (props: SignupProps) => {
               Email
             </label>
             <div className='flex'>
-              <input className='outline-none font-medium w-[10vw] text-gray-300' 
+              <input className='outline-none font-medium w-[10vw] text-gray-300'
                 type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setEmail(e.target.value);
                 }} />
