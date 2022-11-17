@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '300px',
+      },
       colors: {
         white: {
           milk: '#f5f5f5'
