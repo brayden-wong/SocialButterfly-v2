@@ -21,23 +21,55 @@
 }
 
 @layer components {
-
   .sign_in {  
     @apply  xs:left-1/2 xs:translate-y-1/2 xs:-translate-x-1/2 xs:w-5/6 xs:h-2/5
-            md:h-2/5 md:translate-y-1/4
-            lg:translate-y-[30%] lg:translate-x-[10%] lg:w-2/5 lg:h-[40rem]
-            2xl:translate-y-[20%] 2xl:w-5/12 2xl:h-[30rem]
+            md:h-2/5 md:translate-y-1/2
+            lg:translate-y-3/4 lg:w-1/2 lg:h-[35rem]
+            xl:translate-y-[60%]
+            2xl:translate-y-3/4 2xl:w-5/12 2xl:h-[30rem]
   }
 
   .transform_sign_in_right {
-    @apply xs:translate-x-full duration-1000
+    @apply xs:translate-x-[150%] duration-[900ms]
   }
 
   .transform_sign_in_left {
-    @apply xs:-translate-x-1/2 duration-1000
+    @apply xs:-translate-x-1/2 duration-[900ms]
   }
 
   .input_fields_login {
     @apply rounded-none bg-transparent xs:border-b-[.3vw] lg:border-b-[.2vw] border-b-black
+  }
+
+  .sign_up {
+    @apply  xs:left-1/2 xs:translate-y-[30%] xs:-translate-x-1/2 xs:w-5/6 xs:h-1/2
+            sm:h-3/5
+            md:h-4/5 md:translate-y-[10%]
+            lg:translate-y-[20%] lg:translate-x-[10%] lg:w-3/5 lg:h-[45rem]
+            2xl:translate-y-[35%] 2xl:w-5/12 2xl:h-[40rem]
+  }
+
+  .transform_sign_up_left {
+    @apply xs:-translate-x-[200%] lg:-translate-x-[250%] duration-[900ms]
+  }
+
+  .transform_sign_up_right {
+    @apply xs:-translate-x-1/2 duration-[900ms]
+  }
+}
+
+.atom-animation {
+  background-color: transparent;
+  transform: translateX(-50%);
+  animation: atom_spin 10s linear infinite;
+}
+
+@keyframes atom_spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
