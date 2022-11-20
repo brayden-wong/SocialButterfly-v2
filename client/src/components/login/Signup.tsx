@@ -10,6 +10,9 @@ export const Signup = (props: SignupProps) => {
   const [password, setPassword] = useState('');
   const [viewPassword, setViewPassword] = useState<'password' | 'text'>('password');
 
+  let variable: string = 'hello';
+  console.log(variable);
+
   const handleViewPassword = () => viewPassword === 'password' ? setViewPassword('text') : setViewPassword('password');
 
   const handleSignUp = () => {
