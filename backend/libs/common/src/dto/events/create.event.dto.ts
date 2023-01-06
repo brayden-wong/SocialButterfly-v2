@@ -3,6 +3,7 @@ import { Address } from '../address.class';
 export class CreateEventDto {
   event_name: string;
   user_id?: string;
+  description: string;
   date: Date;
   time?: string;
   online: boolean;

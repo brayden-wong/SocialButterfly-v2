@@ -16,10 +16,6 @@ export const Authentication = () => {
         <Login signup={signup} setSignup={() => setSignup(!signup)}
           resetPassword={resetPassword} setResetPassword={() => setResetPassword(!resetPassword)} />
       </div>
-      {/* <BiAtom className=' xs:bottom-[15%] sm:bottom-[15%] lg:bottom-[20%] xl:bottom-[10%] 2xl:bottom-[7%] 
-                        xs:text-[20vw] md:text-[15vw] 
-          absolute left-1/2 -translate-x-1/2 
-        text-white-milk atom-animation' /> */}
     </div>
   );
 }

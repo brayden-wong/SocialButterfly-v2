@@ -36,12 +36,32 @@ export class UsersService {
     return newUser;
   }
 
+  async getInfo(id: string) {
+    return await this.prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        first_name: true,
+        last_name: true,
+        email: true,
+        secondary_email: true,
+        verified: true,
+      }
+    });
+  }
+
   async findAllUsers() {
     return await this.prisma.user.findMany();
   }
 
   async findUserById(id: string) {
-    return await this.prisma.user.findUnique({ where: { id: id } });
+    return await this.prisma.user.findUnique({ 
+      where: { id: id },
+      select: {
+        first_name: true,
+        last_name: true,
+        email: true,
+      }
+    });
   }
 
   async updateUser(id: string, user: UpdateUserDto) {

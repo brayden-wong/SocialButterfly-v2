@@ -4,6 +4,7 @@ import { Authentication } from "./pages/Authentication";
 import { User } from './interfaces/user';
 import { UserContext } from './context/user.context';
 import { Dashboard } from './pages/Dashboard';
+import { Credentials } from './pages/Credentials';
 
 const App = () => {
   const userContext = UserContext;
@@ -11,7 +12,7 @@ const App = () => {
     <BrowserRouter>
       <UserContext.Provider value={{ access_token: '', refresh_token: '' }} >
         <Routes>
-          <Route path='/' element={<Authentication />} />
+          <Route path='/' element={<Credentials />} />
           <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
       </UserContext.Provider>

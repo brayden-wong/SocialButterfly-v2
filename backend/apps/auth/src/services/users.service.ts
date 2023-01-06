@@ -14,6 +14,10 @@ export class UsersService {
     return await lastValueFrom(this.client.send('register user', { user: user }));
   }
 
+  async getInfo(token: string) {
+    return await lastValueFrom(this.client.send('get info', { access_token: token }));
+  }
+
   async findAllUsers() {
     return await lastValueFrom(this.client.send('find all users', { }));
   }

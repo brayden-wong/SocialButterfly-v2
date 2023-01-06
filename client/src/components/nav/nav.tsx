@@ -1,9 +1,23 @@
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-export const Navigation = () => {
-  
+interface Props {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export const Navigation = (props: Props) => {
+  const navigate = useNavigate();
+
   return (
-      <div className='w-[50%] h-[7.5vw] bg-[#D6E6F2] rounded-br-[3vw] shadow-2xl relative' >
-        <h1 className='text-[4vw] text-center pt-[.5vw]'>Social Butterfly</h1>
-      </div>
+    <ul className='group flex gap-4 items-center bg-gray-500 hidden'>
+      <li className='cursor-pointer hover:underline'>{props.name}</li>
+      <li className='cursor-pointer opacity-0 hover:underline group-hover:opacity-100 group-hover:duration-300'
+        onClick={() => console.log('My Events')}>My Events</li>
+      <li className='cursor-pointer opacity-0 hover:underline group-hover:opacity-100 group-hover:duration-300'
+        onClick={() => console.log('Preferences')}>Preferences</li>
+    </ul>
   )
 }

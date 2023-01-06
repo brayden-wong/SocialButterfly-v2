@@ -7,9 +7,10 @@ CREATE TABLE "User" (
     "secondary_email" TEXT,
     "password" TEXT NOT NULL,
     "refresh_token" TEXT,
-    "verify_key" TEXT,
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "event_id" TEXT,
+    "following" TEXT[],
+    "followers" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -22,8 +23,9 @@ CREATE TABLE "Event" (
     "event_name" TEXT NOT NULL,
     "user_id" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
-    "time" TEXT NOT NULL,
-    "online" BOOLEAN NOT NULL,
+    "description" TEXT NOT NULL DEFAULT '',
+    "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "online" BOOLEAN NOT NULL DEFAULT false,
     "available_slots" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -45,10 +47,13 @@ CREATE TABLE "Address" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_event_id_key" ON "User"("event_id");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Event_user_id_key" ON "Event"("user_id");
+CREATE UNIQUE INDEX "User_secondary_email_key" ON "User"("secondary_email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_event_id_key" ON "User"("event_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Address_event_id_key" ON "Address"("event_id");

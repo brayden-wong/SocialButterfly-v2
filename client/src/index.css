@@ -3,21 +3,19 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 300;
-    font-size: 1vw;
-  }
 
-  .dashboard {
+  body,
+  html,
+  #root {
     height: 100%;
-    width: 100%;
-    background-color: #F7FBFC;
+    overflow-x: hidden;
   }
 
+  body,
+  html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    @apply bg-zinc-900 text-white-milk 
+  }
 }
 
 @layer components {
@@ -57,19 +55,43 @@
   .transform_sign_up_right {
     @apply xs:-translate-x-1/2 duration-[900ms]
   }
-}
 
-.atom-animation {
-  background-color: transparent;
-  animation: atom_spin 10s linear infinite;
-}
+  .cutoff-text {
+    --max-lines: 3;
+    --line-height: 1.2;
 
-@keyframes atom_spin {
-  0% {
-    transform: rotate(0deg);
+    max-height: calc(var(--max-lines) * var(--line-height) * 1em);
+    line-height: var(--line-height);
+
+    overflow: hidden;
+    position: relative;
   }
 
-  100% {
-    transform: rotate(360deg);
+  .cutoff-text.cutoff-text:has(+ .viewButton:not(:checked))::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: calc(1em * var(--line-height));
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, #14b8a6 50%);
+    transition: 0.7s;
+  }
+
+  .viewButton {
+    appearance: none;
+    cursor: pointer;
+  }
+  
+  .viewButton::before {
+    content: 'show more';
+  }
+
+  .viewButton:checked::before {
+    content: 'show less';
+  }
+
+  .cutoff-text:has(+ .viewButton:checked) {
+    max-height: none;
   }
 }

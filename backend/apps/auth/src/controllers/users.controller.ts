@@ -19,13 +19,22 @@ export class UsersController {
     return await this.usersSerivce.registerUser(user);
   }
 
+  @Get('getInfo')
+  async getInfo(
+    @GetUserId()
+    token: string
+  ) {
+    console.log(token);
+    return await this.usersSerivce.getInfo(token);
+  }
+
   @Public()
   @Get()
   async findAllUsers() {
     return await this.usersSerivce.findAllUsers();
   }
   
-  @Get('')
+  @Get(':id')
   async findUserById(
     @GetUserId()
     id: string

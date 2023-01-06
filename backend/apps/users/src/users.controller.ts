@@ -1,5 +1,5 @@
 import { CreateUserDto } from '@app/common';
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersService } from './users.service';
 
@@ -13,6 +13,14 @@ export class UsersController {
     user: CreateUserDto
   ) {
     return await this.usersService.registerUser(user);
+  }
+
+  @MessagePattern('get info')
+  async getInfo(
+    @Payload('access_token')
+    token: string
+  ) {
+    return await this.usersService.getInfo(token);
   }
 
   @MessagePattern('refresh token')

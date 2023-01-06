@@ -1,7 +1,7 @@
-export class Address {
+export interface Address {
   street: string;
   suite?: string;
   city: string;
   state: string;
-  zipcode: string
+  zipcode: string;
 }

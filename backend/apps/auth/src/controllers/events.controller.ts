@@ -26,6 +26,7 @@ export class EventsController {
     @GetUserId()
     user_id: string
   ) {
+    console.log('hitting this function');
     return await this.eventsService.rsvp({ event_id: event_id, user_id: user_id });
   }
 
